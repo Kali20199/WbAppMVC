@@ -1,0 +1,117 @@
+   
+
+    function SaveCanvas() {
+
+        var signiture = $("#canvasimg").attr("src", $("#paint").get(0).toDataURL("img/png"));
+        var z = 3;
+    }
+
+
+    function Clear() {
+
+        const context = canvas.getContext('2d');
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    var i = 0
+
+    function DataSearch() {
+        i++
+
+        const formData = new FormData();
+
+        $(document).ready(function () {
+            $("#signature").jSignature()
+        })
+
+        var searchBar = $('#searchBar').val()
+        var Filterdate = $('#Date').val()
+        var Order = $('#order').val()
+        var filter = $('#filterBy').val()
+        var ID = document.getElementById("userId").textContent
+        console.log(searchBar + "  Date :  " + Filterdate);
+        Data = {
+            date: Filterdate,
+            order: Order,
+            filterBy: filter
+        }
+        var signiture = $("#paint").get(0).toDataURL("img/png");
+        formData.append("date", Filterdate)
+        formData.append("order", Order)
+        formData.append("filterBy", filter)
+        formData.append("canvas", signiture)
+        formData.append("UserId", ID)
+
+        //    for (var key of formData.entries()) {
+        //    console.log(key[0] + ', ' + key[1]);
+        //}
+
+    }
+  
+
+
+$.ajax({
+            url: 'https://localhost:44357/Student/DataQuery',
+            type:"Post",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: (data) => {
+              //  var json = $.parseJSON(data);
+             //   console.log("Succsess Ajax :" + data)
+                $("tbody").html("")
+
+                data.forEach((item)=> {
+
+
+                    $("tbody").append(`<tr ><td id="userId">${item.Id}</td>
+                        <td>${item.firstname}</td >
+                        <td>${item.secondname}</td>
+                        <td>${item.thirdname}</td>
+                        <td>${item.age}</td>
+                        <td>Prep3</td>
+                         <td>${item.email}</td>
+                        <td>${item.wallet}</td>
+
+                        <td>
+
+                       <a class="btn btn-primary"
+                                       href="@Url.Action("Detail","Home")/${item.Id}">Details</a>
+                                    <a class="btn btn-success"
+                                       href="@Url.Action("Create", "Home")/${item.ID}">Create</a>
+                                    @*<button class="btn btn-warning" type="button" data-toggle="modal" data-target="#myModal">New Relations</button>*@
+
+                                    <a class="btn btn-warning"
+                                       href="@Url.Action("Parents", "Home")/${item.Id}">Parents</a>
+
+
+                                    <a class="btn btn-warning"
+                                       href="@Url.Action("SubjectIndex", "Home")/${item.Id}">Subjects</a>
+</td>
+
+
+                        </tr > `);
+                })
+             //   $('#fname_td').append("xxxxxxx")
+     //   alert("Succsess")
+    },
+    error:()=>{
+        alert("Error")
+    }
+        })
+
+
+
+    }
+
+
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+
+
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})

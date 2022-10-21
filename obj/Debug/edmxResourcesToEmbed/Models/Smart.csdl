@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="smartModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="parent">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="secondname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="studentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="student" Relationship="Self.FK_parent_student" FromRole="parent" ToRole="student" />
+  </EntityType>
+  <EntityType Name="stage">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="studentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="student" Relationship="Self.FK_stage_student1" FromRole="stage" ToRole="student" />
+    <NavigationProperty Name="student1" Relationship="smartModel.FK_stage_student" FromRole="stage" ToRole="student" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="secondname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="age" Type="Int32" />
+    <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="wallet" Type="Int32" />
+    <Property Name="thirdname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="parents" Relationship="Self.FK_parent_student" FromRole="student" ToRole="parent" />
+    <NavigationProperty Name="stage" Relationship="Self.FK_stage_student1" FromRole="student" ToRole="stage" />
+    <NavigationProperty Name="subjects" Relationship="Self.FK_subject_student" FromRole="student" ToRole="subject" />
+    <NavigationProperty Name="stages" Relationship="smartModel.FK_stage_student" FromRole="student" ToRole="stage" />
+  </EntityType>
+  <EntityType Name="subject">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="subjectname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="studentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="student" Relationship="Self.FK_subject_student" FromRole="subject" ToRole="student" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="username" />
+      <PropertyRef Name="email" />
+      <PropertyRef Name="password" />
+    </Key>
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="branch" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_parent_student">
+    <End Role="student" Type="Self.student" Multiplicity="0..1" />
+    <End Role="parent" Type="Self.parent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="parent">
+        <PropertyRef Name="studentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_stage_student1">
+    <End Role="student" Type="Self.student" Multiplicity="1" />
+    <End Role="stage" Type="Self.stage" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="stage">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_subject_student">
+    <End Role="student" Type="Self.student" Multiplicity="0..1" />
+    <End Role="subject" Type="Self.subject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="subject">
+        <PropertyRef Name="studentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="smartEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="parents" EntityType="Self.parent" />
+    <EntitySet Name="stages" EntityType="Self.stage" />
+    <EntitySet Name="students" EntityType="Self.student" />
+    <EntitySet Name="subjects" EntityType="Self.subject" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_parent_student" Association="Self.FK_parent_student">
+      <End Role="student" EntitySet="students" />
+      <End Role="parent" EntitySet="parents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_stage_student1" Association="Self.FK_stage_student1">
+      <End Role="student" EntitySet="students" />
+      <End Role="stage" EntitySet="stages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_subject_student" Association="Self.FK_subject_student">
+      <End Role="student" EntitySet="students" />
+      <End Role="subject" EntitySet="subjects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_stage_student" Association="smartModel.FK_stage_student">
+      <End Role="student" EntitySet="students" />
+      <End Role="stage" EntitySet="stages" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_stage_student">
+    <End Type="smartModel.student" Role="student" Multiplicity="0..1" />
+    <End Type="smartModel.stage" Role="stage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="stage">
+        <PropertyRef Name="studentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

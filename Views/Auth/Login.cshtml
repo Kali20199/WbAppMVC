@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Auth";
+}
+
+
+
+<link rel="stylesheet" type="text/css" href="~/Content/Css/Auth/Login.css" />
+
+
+@{
+
+    var isVisable = "visable";
+}
+@if (isVisable == "visable")
+{
+<div id="LoginForm"  class="Auth_container">
+    <div class="item_container">
+
+        <div>
+            <div class="Label">
+                <label>
+                    <h4>Login</h4>
+                </label>
+            </div>
+            <div class="input_wrapper">
+                <input id="email" class="input" type="email" placeholder="Email" />
+            </div>
+            <div class="input_wrapper">
+                <input id="password" class="input" type="password" placeholder="Password" />
+            </div>
+            <div class="Actions">
+                <div>
+                    <div class="button_container">
+                        <button onclick="javascript:Submit()" class="MyBt">Sign In</button>
+                    </div>
+                    <div class="button_container">
+                        <button class="MyBt">New User</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<h2 id="Result" class="Login container" style="visibility:hidden">
+</h2>
+
+
+
+
+    <script>
+
+        function Submit() {
+
+        var email = $('#email').val()
+            var password = $('#password').val()
+
+
+
+            var Data = {
+                id: "Hello"
+            }
+
+            $.ajax({
+    url: "https://localhost:44357/Auth/Login",
+                type: "Post",
+
+                data: Data,
+
+
+
+                success: (data) => {
+
+                    $('#LoginForm').attr("style", "display:none")
+                    $('#Result').attr("style", "visibility:visable")
+                    $('#Result').append(data)
+
+                },
+
+            })
+
+
+
+        }
+
+    </script>

@@ -1,0 +1,77 @@
+﻿
+.MyLoginForm {
+}
+
+.Label {
+
+    display: flex;
+    justify-content: center;
+}
+
+h4 {
+    color: white;
+}
+
+
+input {
+    height: 42px;
+    background-image: linear-gradient(to right top, #c413b6, #bc21c3, #b12dd1, #a438df, #9342ec);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    margin: 20px;
+}
+
+.button_container {
+    margin-top: 20px;
+}
+
+
+
+.MyBt {
+    height: 42px;
+    width: 150px;
+    color: white;
+    border-radius: 20px;
+    background-image: linear-gradient(to right top, #c413b6, #bc21c3, #b12dd1, #a438df, #9342ec);
+    border: none;
+    transition: 0.3s;
+}
+
+    .MyBt:hover {
+        padding-bottom: 10px;
+        background-image: linear-gradient(to right top, #7a0d71, #7a107f, #77168e, #711d9e, #6726af);
+        transition: 0.4s;
+    }
+
+
+
+    .Auth_container {
+        margin-top: 20%;
+        display: flex;
+        justify-content: center;
+    }   
+    .item_container {
+        width: 400px;
+        height: 350px;
+        background-image: linear-gradient(to right top, #7f0c76, #87008f, #8a00ab, #8700c9, #7912eb);
+        box-shadow: 5px 5px 10px gray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+
+    .Actions{
+        display: flex;
+        justify-content: center;
+      
+    }
+
+    .LoginResult{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+    }

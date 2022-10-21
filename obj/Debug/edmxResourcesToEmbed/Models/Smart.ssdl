@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="smartModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="parent">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="firstname" Type="varchar" MaxLength="50" />
+    <Property Name="secondname" Type="varchar" MaxLength="50" />
+    <Property Name="username" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar" MaxLength="50" />
+    <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="studentId" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="stage">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="studentId" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="firstname" Type="varchar" MaxLength="50" />
+    <Property Name="secondname" Type="varchar" MaxLength="50" />
+    <Property Name="age" Type="int" />
+    <Property Name="gender" Type="varchar" MaxLength="50" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar" MaxLength="50" />
+    <Property Name="wallet" Type="int" />
+    <Property Name="thirdname" Type="varchar" MaxLength="50" />
+    <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'smart.dbo.StudentSubjects' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="StudentSubjects">
+          <Property Name="subjectId" Type="varchar" MaxLength="50" />
+          <Property Name="ss" Type="varchar" MaxLength="50" />
+        </EntityType>-->
+  <EntityType Name="subject">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="subjectname" Type="varchar" MaxLength="50" />
+    <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="studentId" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'smart.dbo.Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="username" />
+      <PropertyRef Name="email" />
+      <PropertyRef Name="password" />
+    </Key>
+    <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="branch" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_parent_student">
+    <End Role="student" Type="Self.student" Multiplicity="0..1" />
+    <End Role="parent" Type="Self.parent" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="parent">
+        <PropertyRef Name="studentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_stage_student">
+    <End Role="student" Type="Self.student" Multiplicity="0..1" />
+    <End Role="stage" Type="Self.stage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="stage">
+        <PropertyRef Name="studentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_subject_student">
+    <End Role="student" Type="Self.student" Multiplicity="0..1" />
+    <End Role="subject" Type="Self.subject" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="subject">
+        <PropertyRef Name="studentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="smartModelStoreContainer">
+    <EntitySet Name="parent" EntityType="Self.parent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="stage" EntityType="Self.stage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="subject" EntityType="Self.subject" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[Users].[username] AS [username], 
+[Users].[email] AS [email], 
+[Users].[password] AS [password], 
+[Users].[branch] AS [branch]
+FROM [dbo].[Users] AS [Users]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_parent_student" Association="Self.FK_parent_student">
+      <End Role="student" EntitySet="student" />
+      <End Role="parent" EntitySet="parent" />
+    </AssociationSet>
+    <AssociationSet Name="FK_stage_student" Association="Self.FK_stage_student">
+      <End Role="student" EntitySet="student" />
+      <End Role="stage" EntitySet="stage" />
+    </AssociationSet>
+    <AssociationSet Name="FK_subject_student" Association="Self.FK_subject_student">
+      <End Role="student" EntitySet="student" />
+      <End Role="subject" EntitySet="subject" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

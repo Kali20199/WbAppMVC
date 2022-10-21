@@ -1,0 +1,20 @@
+.filter{
+    display: flex;
+    width: 750px;
+    justify-content: space-between;
+}
+
+.filter_selector{
+    width: 150px;
+    height: 35px;
+}
+
+
+.canvasimg {
+    height: 200px;
+    width: 200px;
+    background-color: aqua;
+}
+.sketch{
+    display: flex;
+}

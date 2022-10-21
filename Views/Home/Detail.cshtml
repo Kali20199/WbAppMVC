@@ -1,0 +1,60 @@
+﻿@model WbAppMVC.Models.student
+
+
+<h2>Details</h2>
+
+@{
+    var i = 0;
+ }
+
+ <link rel="stylesheet"  type="text/css" href="~/Content/Css/StudentDetails.css" />
+
+<div class="container">
+    <div class="card_container">
+        <div class="header">
+            <h2></h2>
+        </div>
+        <div class="details">
+            <div class="img_container">
+                 <img src="https://www.kindpng.com/picc/m/173-1731325_person-icon-png-transparent-png.png"/>
+            </div>
+            <div class="item"><h4>firstname :</h4>  <span>@Model.firstname</span></div>
+            <div class="item"><h4>secondname :</h4> <span> @Model.secondname </span></div>
+            <div class="item"><h4>thirdname :</h4> <span>  @Model.thirdname</span></div>
+            <div class="item"><h4>email :</h4> <span>  @Model.email</span></div>
+            @foreach (var item in Model.subjects)
+            {
+                
+                i++;
+                 
+                <div class="item">subj @i : @item.subjectname</div>
+            }
+
+
+            <div class="parents container">
+<div>
+             @{
+                i=0;
+             }
+                @if(Model.parents.Count > 0){
+                 <div> Parents</div>
+                foreach (var item in Model.parents)
+            {
+                
+                i++;
+                 
+                <div class="item"> @i : @item.firstname</div>
+            }
+             }
+            </div>
+          </div>     
+
+            <a  href="@Url.Action("DeleteStudent","Student", new { id = Model.Id})" class="btn btn-danger">Delete</a>
+        </div>
+
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<WbAppMVC.Models.parent>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+    
+<p>
+    <a href="@Url.Action("CreateParent", "Home")">Create</a>
+</p>
+<table id=table_id class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.firstname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.secondname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.studentId)
+        </th>
+        <th></th>
+    </tr>
+</thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.firstname
+         
+        </td>
+        <td>
+            @item.secondname
+          
+        </td>
+        <td>
+            @item.username
+            
+        </td>
+        <td>
+            @item.password
+          
+        </td>
+        <td>
+            @item.studentId
+           
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+  </tbody>
+
+</table>
+
+<script>
+    
+        $(document).ready(function () {
+           
+        $('#table_id').DataTable();
+    });
+
+</script>

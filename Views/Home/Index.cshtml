@@ -1,0 +1,163 @@
+﻿@model IEnumerable<WbAppMVC.Models.student>
+
+<br />
+<br />
+
+<link rel="stylesheet" type="text/css" href="~/Content/Css/canvas.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/Css/StudentIndex.css" />
+
+<a  href="@Url.Action("GtoToLogin", "Auth")" >Login</a>
+
+<!-- BEGIN PAGE CONTENT-->
+<div id="signature"></div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>الــقــاعــات
+                </div>
+                <div class="tools">
+                </div>
+            </div>
+
+            @*filters*@
+            @*<div class="filter">
+                <div class="id">
+                    <label>Date</label>
+                    <input class="filter_selector" onchange="javascript:DataSearch()" type="date" id="Date" />
+
+                </div>
+
+                <div class="id">
+                    <label>Orders</label>
+                    <select onchange="javascript:DataSearch()" class="filter_selector" id="order">
+                        <option value="Asc">Asc</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+
+                </div>
+
+
+                <div class="id">
+                    <label>FilterBy</label>
+                    <select onchange="javascript:DataSearch()" class="filter_selector" id="filterBy">
+                        <option value="FirstName">FirstName</option>
+                        <option value="SecondName">SecondName</option>
+                        <option value="ThirdName">ThirdName</option>
+                        <option value="Age">Age</option>
+                        <option value="Email">Email</option>
+                        <option value="Wallet">Wallet</option>
+                    </select>
+
+                </div>*@
+
+
+
+            </div>
+            @*<input onkeyup="javascript:DataSearch()" id="searchBar" />*@
+            <div class="portlet-body">
+
+
+                <table class="mytable table table-striped table-bordered dt-responsive"  id="mytable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Email</th>
+                            <th>firstname</th>
+                            <th>SecondName</th>
+                            <th>ThirdName</th>
+                            <th>Wallet</th>
+                            <th>Age</th>
+                            <th>Opearations</th>
+                        </tr>
+                    </thead>
+
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>emai</th>
+                            <th>firstname</th>
+                            <th>SecondName</th>
+                            <th>ThirdName</th>
+                            <th>Wallet</th>
+                            <th>age</th>
+                            <th>age</th>
+                            <th>Opearations</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="canvas_wrapper" id="sketch">
+                <canvas id="paint"></canvas>
+
+                <img class="canvasimg" id="canvasimg" src="" />
+            </div>
+            <button class="btn btn-primary" onclick="javascript:SaveCanvas()">Save</button>
+            <button class="btn btn-danger" onclick="javascript:Clear()">Clear</button>
+        </div>
+    </div>
+
+
+<script type="text/javascript" src="~/Scripts/canavas.js"></script>
+<script>
+
+    // Ajax dataTabele
+
+    $(document).ready(function () {
+        console.log("Ready");
+        $('#mytable').dataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "responsive": true,
+            "scrollCollapse": true,
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+
+            "ajax": {
+                "url": "/StudentQuery/NewDataQuery",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "dom": 'Bfrtip',
+            // Buttons
+            "buttons": [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
+            "columnDefs": [{
+                "targets": [0],
+                "visible": true,
+                "searchable": false
+            }],
+            "columns": [
+                { "data": "Id", "name": "firstname", "autowidth": true },
+                { "data": "email", "name": "secondname", "autowidth": true },
+                { "data": "firstname", "name": "secondname", "autowidth": true },
+                { "data": "secondname", "name": "secondname", "autowidth": true },
+                { "data": "thirdname", "name": "secondname", "autowidth": true },
+                { "data": "wallet", "name": "secondname", "autowidth": true },
+                { "data": "age", "name": "secondname", "autowidth": true },
+                {
+                    "render": function (data, type, row, meta) {
+                        return   `
+                                    <a class="btn btn-primary"
+                                       href="@Url.Action("Detail","Home")/${row.Id}">Details</a>
+                                    <a class="btn btn-success"
+                                       href="@Url.Action("Create", "Home")/${row.Id}">Create</a>
+                      `
+                    }
+                }
+
+
+
+            ]
+        })
+    })
+</script>

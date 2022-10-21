@@ -1,0 +1,141 @@
+﻿@model WbAppMVC.Models.parent
+
+@{
+    ViewBag.Title = "CreateParent";
+}
+
+<h2>CreateParent</h2>
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>parent</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.firstname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.firstname, new { htmlAttributes = new { @class = "form-control", @id="firstname" } })
+                @Html.ValidationMessageFor(model => model.firstname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.secondname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.secondname, new { htmlAttributes = new { @class = "form-control" ,@id="secondname"} })
+                @Html.ValidationMessageFor(model => model.secondname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" ,@id="username" } })
+                @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2"  })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control",@id="password" } })
+                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.studentId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <select id="child" class="selector">
+                    @foreach (var item in (IEnumerable<WbAppMVC.Models.student>)ViewData["Students"])
+                    {
+                        <option value="@item.Id">@item.firstname</option>
+
+
+
+                    }
+                </select>
+
+
+                @*@Html.EditorFor(model => model.studentId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.studentId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+  <a class="btn btn-primary" href="javascript:Submit()">Create</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+
+<script>
+
+    function Submit() {
+
+        console.log("Submited")
+
+        
+        var firstname = $('#firstname').val()
+        var secondname = $('#secondname').val()
+        var username = $('#username').val()
+        var password = $('#password').val()
+        var ChildId = $('#child').val()
+
+
+        var parent = {}
+        parent['firstname'] = firstname
+        parent['secondname'] = secondname,
+        parent['ChildId'] = ChildId,
+            parent['password'] = password
+        parent['username'] = username
+
+        console.log("firstname :"+firstname)
+
+        $.ajax({
+            url: 'https://localhost:44357/Home/CreateParent',
+            data: parent,
+            type: "post",
+
+            success: function (data) {
+                var json = $.parseJSON(data);
+                console.log("Succsess Ajax :" + data)
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error Ajax")
+                $('#lblCommentsNotification').text("Error encountered while saving the comments.");
+            }
+        });
+
+
+    }
+
+</script>
+
+<style>
+    .selector {
+        width:250px;
+        height:42px;
+        text-align:center;
+    }
+</style>

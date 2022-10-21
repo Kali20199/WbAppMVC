@@ -1,0 +1,65 @@
+﻿@model IEnumerable<string>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<link rel="stylesheet" type="text/css" href="~/Content/Css/SubjectIndex.css" />
+
+<p>
+    <a href="@Url.Action("CreateSubject","Home")">Create</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+           Subject Name
+        </th>
+        <th>
+            Operations
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item
+            </td>
+            <td>
+                <a href="@Url.Action("DeleteSubj","Home",new { subjName=item ,StudentId=(string)ViewData["StudentID"] })" class="btn btn-danger">Delete</a>
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
+
+
+
+
+</table>
+@{
+  foreach(var item in  (List<string>)ViewData["Subjects"]){
+    
+    <div class="Subject_container">
+    <span>@item</span>
+     <a href="@Url.Action("StudentSubject","Home",new { subjName = item, StudentId = (string)ViewData["StudentID"] })">Add</a>
+    </div>
+    }
+}
+
+
+<style>
+    .Subject_container{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid grey;
+    width: 150px;
+
+}
+</style>

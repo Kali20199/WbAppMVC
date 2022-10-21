@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="smartModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="parent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="secondname" Type="varchar" MaxLength="50" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="studentId" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="stage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="studentId" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="secondname" Type="varchar" MaxLength="50" />
+          <Property Name="age" Type="int" />
+          <Property Name="gender" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="wallet" Type="int" />
+          <Property Name="thirdname" Type="varchar" MaxLength="50" />
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'smart.dbo.StudentSubjects' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="StudentSubjects">
+          <Property Name="subjectId" Type="varchar" MaxLength="50" />
+          <Property Name="ss" Type="varchar" MaxLength="50" />
+        </EntityType>-->
+        <EntityType Name="subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="subjectname" Type="varchar" MaxLength="50" />
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="studentId" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'smart.dbo.Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="username" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="branch" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_parent_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="parent" Type="Self.parent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="parent">
+              <PropertyRef Name="studentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stage_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="stage" Type="Self.stage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="stage">
+              <PropertyRef Name="studentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subject_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="subject" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="subject">
+              <PropertyRef Name="studentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="smartModelStoreContainer">
+          <EntitySet Name="parent" EntityType="Self.parent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="stage" EntityType="Self.stage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subject" EntityType="Self.subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Users].[username] AS [username], 
+[Users].[email] AS [email], 
+[Users].[password] AS [password], 
+[Users].[branch] AS [branch]
+FROM [dbo].[Users] AS [Users]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_parent_student" Association="Self.FK_parent_student">
+            <End Role="student" EntitySet="student" />
+            <End Role="parent" EntitySet="parent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stage_student" Association="Self.FK_stage_student">
+            <End Role="student" EntitySet="student" />
+            <End Role="stage" EntitySet="stage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subject_student" Association="Self.FK_subject_student">
+            <End Role="student" EntitySet="student" />
+            <End Role="subject" EntitySet="subject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="smartModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="parent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="secondname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="studentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK_parent_student" FromRole="parent" ToRole="student" />
+        </EntityType>
+        <EntityType Name="stage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="studentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK_stage_student1" FromRole="stage" ToRole="student" />
+          <NavigationProperty Name="student1" Relationship="smartModel.FK_stage_student" FromRole="stage" ToRole="student" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="secondname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="age" Type="Int32" />
+          <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="wallet" Type="Int32" />
+          <Property Name="thirdname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="parents" Relationship="Self.FK_parent_student" FromRole="student" ToRole="parent" />
+          <NavigationProperty Name="stage" Relationship="Self.FK_stage_student1" FromRole="student" ToRole="stage" />
+          <NavigationProperty Name="subjects" Relationship="Self.FK_subject_student" FromRole="student" ToRole="subject" />
+          <NavigationProperty Name="stages" Relationship="smartModel.FK_stage_student" FromRole="student" ToRole="stage" />
+        </EntityType>
+        <EntityType Name="subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="subjectname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="studentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="student" Relationship="Self.FK_subject_student" FromRole="subject" ToRole="student" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="username" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="password" />
+          </Key>
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="branch" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_parent_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="parent" Type="Self.parent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="parent">
+              <PropertyRef Name="studentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stage_student1">
+          <End Role="student" Type="Self.student" Multiplicity="1" />
+          <End Role="stage" Type="Self.stage" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="stage">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subject_student">
+          <End Role="student" Type="Self.student" Multiplicity="0..1" />
+          <End Role="subject" Type="Self.subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="subject">
+              <PropertyRef Name="studentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="smartEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="parents" EntityType="Self.parent" />
+          <EntitySet Name="stages" EntityType="Self.stage" />
+          <EntitySet Name="students" EntityType="Self.student" />
+          <EntitySet Name="subjects" EntityType="Self.subject" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_parent_student" Association="Self.FK_parent_student">
+            <End Role="student" EntitySet="students" />
+            <End Role="parent" EntitySet="parents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stage_student1" Association="Self.FK_stage_student1">
+            <End Role="student" EntitySet="students" />
+            <End Role="stage" EntitySet="stages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subject_student" Association="Self.FK_subject_student">
+            <End Role="student" EntitySet="students" />
+            <End Role="subject" EntitySet="subjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stage_student" Association="smartModel.FK_stage_student">
+            <End Role="student" EntitySet="students" />
+            <End Role="stage" EntitySet="stages" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_stage_student">
+          <End Type="smartModel.student" Role="student" Multiplicity="0..1" />
+          <End Type="smartModel.stage" Role="stage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="stage">
+              <PropertyRef Name="studentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="smartModelStoreContainer" CdmEntityContainer="smartEntities">
+          <EntitySetMapping Name="parents">
+            <EntityTypeMapping TypeName="smartModel.parent">
+              <MappingFragment StoreEntitySet="parent">
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="secondname" ColumnName="secondname" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="studentId" ColumnName="studentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stages">
+            <EntityTypeMapping TypeName="smartModel.stage">
+              <MappingFragment StoreEntitySet="stage">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="studentId" ColumnName="studentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="students">
+            <EntityTypeMapping TypeName="smartModel.student">
+              <MappingFragment StoreEntitySet="student">
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="secondname" ColumnName="secondname" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="wallet" ColumnName="wallet" />
+                <ScalarProperty Name="thirdname" ColumnName="thirdname" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subjects">
+            <EntityTypeMapping TypeName="smartModel.subject">
+              <MappingFragment StoreEntitySet="subject">
+                <ScalarProperty Name="subjectname" ColumnName="subjectname" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="studentId" ColumnName="studentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="smartModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="smartModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="branch" ColumnName="branch" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

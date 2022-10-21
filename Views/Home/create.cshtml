@@ -1,0 +1,125 @@
+﻿@model WbAppMVC.Models.student
+
+<h2>Add New Student</h2>
+
+
+<link rel="stylesheet" type="text/css" href="~/Content/Css/create.css" />
+
+
+
+<div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input id="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+    <small id="Email" class="form-text text-muted">We'll never share your email with anyone else.</small>
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="passowrd" placeholder="Password">
+</div>
+
+
+
+<div class="form-group">
+    <label class="form-check-label" >firstname</label>
+    <input class="form-control" type="text" id="firstname" placeholder="firstname">
+
+</div>
+
+<div class="form-group">
+    <label class="form-check-label" for="exampleCheck1">secondname</label>
+    <input class="form-control" type="text" id="secondname" placeholder="secondname">
+
+</div>
+
+<div class="form-group">
+    <label class="form-check-label" for="exampleCheck1">thirdname</label>
+    <input class="form-control" type="text" id="thirdname" placeholder="thirdname">
+
+</div>
+
+
+
+
+
+<div class="form-group">
+    <label class="form-check-label" for="exampleInputEmail1">Gender</label>
+    <select class="gender" id="gender">
+        <option class="gender" value="male">Male</option>
+        <option class="gender" value="female">female</option>
+    </select>
+
+</div>
+
+
+
+<div class="form-group">
+    <label class="form-check-label">age</label>
+    <input class="form-control" type="number" id="age" placeholder="Default input">
+
+</div>
+
+<div class="form-group">
+    <label class="form-check-label" for="exampleCheck1">Wallet</label>
+    <input id="wallet" class="form-control" type="text" placeholder="Wallet">
+
+</div>
+<button onclick="javascript:clicked()" class="btn btn-success">Create</button>
+@*<a href="@Url.Action("CreateStudent","Home",new WbAppMVC.Models.MyModels.StudentID{ email=Model.email,password=Model.password })" class="btn btn-success">Create</a>*@
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        console.log("xxxx")
+    })
+    function clicked() {
+        console.log("Button Clicked")
+        var Email = $('#email').val()
+        var Passowrd = $('#password').val()
+        var Wallet = $('#wallet').val()
+        var age = $('#age').val()
+        var Gender = $('#gender').val()
+        var firstname = $('#firstname').val()
+        var secondname = $('#secondname').val()
+        var thirdname = $('#thirdname').val()
+
+
+        Student = {
+
+        }
+        Student['passowrd'] = Passowrd
+        Student['email'] = Email
+        Student['wallet'] = Wallet
+        Student['age'] = age
+        Student['id'] = "xxxx"
+        Student['gender'] = Gender
+        Student['firstname'] = firstname
+        Student['secondname'] = secondname
+        Student['thirdname'] = thirdname
+
+
+
+
+        $.ajax({
+            url: 'https://localhost:44357/Home/CreateStudent',
+            data: Student,
+            type: "post",
+
+            success: function (savingStatus) {
+                console.log("Succsess Ajax")
+                $("#hdnOrigComments").val($('#txtComments').val());
+                $('#lblCommentsNotification').text(savingStatus);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error Ajax")
+                $('#lblCommentsNotification').text("Error encountered while saving the comments.");
+            }
+        });
+
+    }
+
+
+</script>
